@@ -1,7 +1,7 @@
 export default async (req, res) => {
   const searchTerm = req.query.name
-  console.log("searchTerm: " + searchTerm)
-  const apiKey = "9d880d4e2a647266958fced6478ec43f"
+  const apiKey = process.env.API_KEY
+
   var fetchRes = await fetch(
     `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${searchTerm}&apikey=${apiKey}`,
     {
@@ -11,6 +11,7 @@ export default async (req, res) => {
       }
     }
   )
+
   const resJson = await fetchRes.json()
   const characters = resJson.data.results
     .filter(r => r.description) // Get only those with description
@@ -22,7 +23,6 @@ export default async (req, res) => {
       urls: r.urls
     }))
 
-  console.log(`Number of characters found: ` + characters.length)
   res.statusCode = 200
   res.json(characters)
 }
