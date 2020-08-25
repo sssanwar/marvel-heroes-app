@@ -1,6 +1,14 @@
+import { resolveHref } from "next/dist/next-server/lib/router/router"
+
 export default async (req, res) => {
   const searchTerm = req.query.name
   const apiKey = process.env.API_KEY
+
+  if (req.headers.referer.indexOf(req.headers.host) < 0) {
+    res.statusCode = 403
+    res.json([])
+    return
+  }
 
   var fetchRes = await fetch(
     `https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=${searchTerm}&apikey=${apiKey}`,

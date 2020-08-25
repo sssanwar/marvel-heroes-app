@@ -11,7 +11,7 @@ export default function SearchBox() {
   const [searchLoading, setSearchLoading] = React.useState(true)
   const [searchFocused, setSearchFocused] = React.useState(false)
   const handleChange = e => setSearchTerm(event.target.value)
-  const debouncedSearchTerm = useDebounce(searchTerm, 500)
+  const debouncedSearchTerm = useDebounce(searchTerm.trim(), 500)
 
   useEffect(() => {
     if (debouncedSearchTerm) {
